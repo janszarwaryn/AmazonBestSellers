@@ -1,43 +1,67 @@
-<p-menubar [model]="menuItems" class="navigation-bar">
-  <ng-template pTemplate="start">
-    <div class="logo" routerLink="/products">
-      <i class="pi pi-bolt"></i>
-      <span class="logo-text">Amazon Bestsellers</span>
-    </div>
-  </ng-template>
+<nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <div class="flex items-center space-x-12">
+        <a routerLink="/products" class="flex items-center space-x-3 group cursor-pointer">
+          <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center transform group-hover:rotate-6 transition-elegant">
+            <i class="pi pi-shopping-bag text-white text-xl"></i>
+          </div>
+          <span class="text-2xl font-heading font-bold text-primary tracking-tight">
+            Amazon <span class="text-accent">Bestsellers</span>
+          </span>
+        </a>
 
-  <ng-template pTemplate="end">
-    @if (isAuthenticated()) {
-      <div class="user-section">
-        <span class="username">
-          <i class="pi pi-user"></i>
-          {{ currentUser()?.username }}
-        </span>
-        <button
-          pButton
-          label="Logout"
-          icon="pi pi-sign-out"
-          class="p-button-text"
-          (click)="logout()"
-        ></button>
+        <div class="hidden md:flex items-center space-x-8">
+          <a
+            routerLink="/products"
+            routerLinkActive="text-accent border-accent"
+            [routerLinkActiveOptions]="{exact: false}"
+            class="text-sm font-medium text-secondary hover:text-primary border-b-2 border-transparent hover:border-primary transition-elegant pb-1">
+            Produkty
+          </a>
+          @if (isAuthenticated()) {
+            <a
+              routerLink="/favorites"
+              routerLinkActive="text-accent border-accent"
+              class="text-sm font-medium text-secondary hover:text-primary border-b-2 border-transparent hover:border-primary transition-elegant pb-1 flex items-center space-x-1">
+              <i class="pi pi-heart text-sm"></i>
+              <span>Ulubione</span>
+            </a>
+          }
+        </div>
       </div>
-    } @else {
-      <div class="auth-links">
-        <button
-          pButton
-          label="Login"
-          icon="pi pi-sign-in"
-          class="p-button-text"
-          routerLink="/login"
-        ></button>
-        <button
-          pButton
-          label="Register"
-          icon="pi pi-user-plus"
-          class="p-button-outlined"
-          routerLink="/register"
-        ></button>
+
+      <div class="flex items-center space-x-4">
+        @if (isAuthenticated()) {
+          <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex items-center space-x-2 px-4 py-2 bg-surface rounded-lg">
+              <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-semibold">{{ currentUser()?.username?.charAt(0)?.toUpperCase() }}</span>
+              </div>
+              <span class="text-sm font-medium text-primary">{{ currentUser()?.username }}</span>
+            </div>
+            <button
+              (click)="logout()"
+              class="px-4 py-2 text-sm font-medium text-secondary hover:text-primary border border-gray-300 rounded-lg hover:border-primary transition-elegant flex items-center space-x-2">
+              <i class="pi pi-sign-out"></i>
+              <span>Wyloguj</span>
+            </button>
+          </div>
+        } @else {
+          <div class="flex items-center space-x-3">
+            <button
+              routerLink="/login"
+              class="px-4 py-2 text-sm font-medium text-primary hover:text-accent transition-elegant">
+              Zaloguj się
+            </button>
+            <button
+              routerLink="/register"
+              class="px-6 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-dark rounded-lg shadow-sm hover:shadow-md transition-elegant">
+              Rejestracja
+            </button>
+          </div>
+        }
       </div>
-    }
-  </ng-template>
-</p-menubar>
+    </div>
+  </div>
+</nav>

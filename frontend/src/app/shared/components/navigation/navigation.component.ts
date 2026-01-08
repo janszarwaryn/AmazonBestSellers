@@ -1,9 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { MenubarModule } from 'primeng/menubar';
-import { ButtonModule } from 'primeng/button';
-import { MenuItem } from 'primeng/api';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 
 @Component({
@@ -12,8 +9,7 @@ import { AuthService } from '@core/services/auth.service';
   imports: [
     CommonModule,
     RouterLink,
-    MenubarModule,
-    ButtonModule
+    RouterLinkActive
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.css'
@@ -24,20 +20,6 @@ export class NavigationComponent {
 
   readonly isAuthenticated = this.authService.isAuthenticated;
   readonly currentUser = this.authService.currentUser;
-
-  menuItems: MenuItem[] = [
-    {
-      label: 'Products',
-      icon: 'pi pi-shopping-bag',
-      routerLink: '/products'
-    },
-    {
-      label: 'Favorites',
-      icon: 'pi pi-heart',
-      routerLink: '/favorites',
-      visible: this.isAuthenticated()
-    }
-  ];
 
   logout(): void {
     this.authService.logout();

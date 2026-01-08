@@ -1,10 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataViewModule } from 'primeng/dataview';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { SkeletonModule } from 'primeng/skeleton';
-import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ProductsService } from '@core/services/products.service';
@@ -18,10 +14,6 @@ import { Product } from '@core/models';
   imports: [
     CommonModule,
     DataViewModule,
-    ButtonModule,
-    CardModule,
-    SkeletonModule,
-    MessageModule,
     ToastModule
   ],
   providers: [MessageService],

@@ -1,9 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { SkeletonModule } from 'primeng/skeleton';
-import { MessageModule } from 'primeng/message';
+import { RouterLink } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -15,10 +12,7 @@ import { Favorite } from '@core/models';
   standalone: true,
   imports: [
     CommonModule,
-    ButtonModule,
-    CardModule,
-    SkeletonModule,
-    MessageModule,
+    RouterLink,
     ToastModule,
     ConfirmDialogModule
   ],
@@ -88,7 +82,7 @@ export class FavoritesListComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Date(date).toLocaleDateString('pl-PL', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'

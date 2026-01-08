@@ -2,11 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { ButtonModule } from 'primeng/button';
-import { MessageModule } from 'primeng/message';
 import { AuthService } from '@core/services/auth.service';
 
 @Component({
@@ -16,11 +13,8 @@ import { AuthService } from '@core/services/auth.service';
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    CardModule,
     InputTextModule,
-    PasswordModule,
-    ButtonModule,
-    MessageModule
+    PasswordModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
