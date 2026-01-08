@@ -5,7 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using DotNetEnv;
 
-Env.Load();
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env");
+if (File.Exists(envPath))
+{
+    Env.Load(envPath);
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
