@@ -3,18 +3,39 @@ using AmazonBestSellers.API.Middleware;
 using AmazonBestSellers.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using DotNetEnv;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
+{
+    ["Jwt:Secret"] = Environment.GetEnvironmentVariable("JWT_SECRET"),
+    ["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+    ["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
+    ["Jwt:ExpireMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRE_MINUTES"),
+    ["RapidAPI:Key"] = Environment.GetEnvironmentVariable("RAPIDAPI_KEY"),
+    ["RapidAPI:Host"] = Environment.GetEnvironmentVariable("RAPIDAPI_HOST"),
+    ["RapidAPI:BaseUrl"] = Environment.GetEnvironmentVariable("RAPIDAPI_BASE_URL"),
+    ["Cors:AllowedOrigins:0"] = Environment.GetEnvironmentVariable("CORS_ALLOWED_ORIGINS")
+});
 
 builder.Host.UseSerilog((context, configuration) =>
 {
     configuration.ReadFrom.Configuration(context.Configuration);
 });
 
+var connectionString = $"Server={Environment.GetEnvironmentVariable("DB_HOST")};" +
+                       $"Port={Environment.GetEnvironmentVariable("DB_PORT")};" +
+                       $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
+                       $"User={Environment.GetEnvironmentVariable("DB_USER")};" +
+                       $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};";
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+        connectionString,
+        ServerVersion.AutoDetect(connectionString)
     )
 );
 

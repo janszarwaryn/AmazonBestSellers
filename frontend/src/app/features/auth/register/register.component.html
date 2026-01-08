@@ -5,10 +5,10 @@
         <i class="pi pi-user-plus text-white text-3xl"></i>
       </div>
       <h1 class="text-5xl font-heading font-bold text-primary mb-3 tracking-tight">
-        Dołącz do nas
+        Join us
       </h1>
       <p class="text-secondary text-base">
-        Stwórz nowe konto w kilka chwil
+        Create your account in moments
       </p>
     </div>
 
@@ -25,13 +25,13 @@
 
         <div class="space-y-2">
           <label for="username" class="block text-sm font-medium text-primary mb-2">
-            Nazwa użytkownika
+            Username
           </label>
           <input
             pInputText
             id="username"
             formControlName="username"
-            placeholder="Wpisz nazwę użytkownika"
+            placeholder="Enter your username"
             class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
             [class.border-red-500]="username?.invalid && username?.touched"
           />
@@ -39,13 +39,13 @@
             <small class="text-red-500 text-xs mt-1 flex items-center">
               <i class="pi pi-times-circle text-xs mr-1"></i>
               @if (username?.errors?.['required']) {
-                Nazwa użytkownika jest wymagana
+                Username is required
               }
               @if (username?.errors?.['minlength']) {
-                Nazwa użytkownika musi mieć minimum 5 znaków
+                Username must be at least 5 characters
               }
               @if (username?.errors?.['pattern']) {
-                Nazwa użytkownika może zawierać tylko litery i cyfry
+                Username can only contain letters and numbers
               }
             </small>
           }
@@ -53,13 +53,13 @@
 
         <div class="space-y-2">
           <label for="password" class="block text-sm font-medium text-primary mb-2">
-            Hasło
+            Password
           </label>
           <p-password
             formControlName="password"
             [feedback]="true"
             [toggleMask]="true"
-            placeholder="Wpisz hasło"
+            placeholder="Enter your password"
             styleClass="w-full"
             inputStyleClass="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
             [class.border-red-500]="password?.invalid && password?.touched"
@@ -69,31 +69,31 @@
               <div class="flex items-center mb-1">
                 <i class="pi pi-times-circle text-xs mr-1"></i>
                 @if (password?.errors?.['required']) {
-                  <span>Hasło jest wymagane</span>
+                  <span>Password is required</span>
                 }
                 @if (password?.errors?.['minlength']) {
-                  <span>Hasło musi mieć minimum 8 znaków</span>
+                  <span>Password must be at least 8 characters</span>
                 }
               </div>
               @if (password?.errors?.['passwordComplexity']) {
                 <div class="bg-red-50 border border-red-100 rounded-lg p-3 mt-2">
-                  <div class="font-medium mb-2">Hasło musi zawierać:</div>
+                  <div class="font-medium mb-2">Password must contain:</div>
                   <ul class="space-y-1 ml-2">
                     <li class="flex items-center">
                       <i class="pi pi-check-circle text-xs mr-1.5" [class.text-green-500]="password?.errors?.['passwordComplexity']?.hasUpperCase" [class.text-red-400]="!password?.errors?.['passwordComplexity']?.hasUpperCase"></i>
-                      <span>Przynajmniej jedną wielką literę</span>
+                      <span>At least one uppercase letter</span>
                     </li>
                     <li class="flex items-center">
                       <i class="pi pi-check-circle text-xs mr-1.5" [class.text-green-500]="password?.errors?.['passwordComplexity']?.hasLowerCase" [class.text-red-400]="!password?.errors?.['passwordComplexity']?.hasLowerCase"></i>
-                      <span>Przynajmniej jedną małą literę</span>
+                      <span>At least one lowercase letter</span>
                     </li>
                     <li class="flex items-center">
                       <i class="pi pi-check-circle text-xs mr-1.5" [class.text-green-500]="password?.errors?.['passwordComplexity']?.hasDigit" [class.text-red-400]="!password?.errors?.['passwordComplexity']?.hasDigit"></i>
-                      <span>Przynajmniej jedną cyfrę</span>
+                      <span>At least one digit</span>
                     </li>
                     <li class="flex items-center">
                       <i class="pi pi-check-circle text-xs mr-1.5" [class.text-green-500]="password?.errors?.['passwordComplexity']?.hasSpecialChar" [class.text-red-400]="!password?.errors?.['passwordComplexity']?.hasSpecialChar"></i>
-                      <span>Przynajmniej jeden znak specjalny</span>
+                      <span>At least one special character</span>
                     </li>
                   </ul>
                 </div>
@@ -104,13 +104,13 @@
 
         <div class="space-y-2">
           <label for="passwordConfirm" class="block text-sm font-medium text-primary mb-2">
-            Potwierdź hasło
+            Confirm password
           </label>
           <p-password
             formControlName="passwordConfirm"
             [feedback]="false"
             [toggleMask]="true"
-            placeholder="Potwierdź hasło"
+            placeholder="Confirm your password"
             styleClass="w-full"
             inputStyleClass="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
             [class.border-red-500]="passwordConfirm?.invalid && passwordConfirm?.touched"
@@ -119,10 +119,10 @@
             <small class="text-red-500 text-xs mt-1 flex items-center">
               <i class="pi pi-times-circle text-xs mr-1"></i>
               @if (passwordConfirm?.errors?.['required']) {
-                Potwierdź hasło
+                Please confirm your password
               }
               @if (passwordConfirm?.errors?.['passwordMismatch']) {
-                Hasła nie są zgodne
+                Passwords do not match
               }
             </small>
           }
@@ -134,18 +134,18 @@
           class="w-full bg-accent hover:bg-accent-dark text-white font-medium py-3.5 rounded-lg shadow-sm hover:shadow-md transition-elegant flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed">
           @if (loading()) {
             <i class="pi pi-spin pi-spinner"></i>
-            <span>Rejestracja...</span>
+            <span>Signing up...</span>
           } @else {
             <i class="pi pi-user-plus"></i>
-            <span>Zarejestruj się</span>
+            <span>Sign up</span>
           }
         </button>
 
         <div class="text-center pt-4 border-t border-gray-100">
           <p class="text-sm text-secondary">
-            Masz już konto?
+            Already have an account?
             <a routerLink="/login" class="text-accent hover:text-accent-dark font-medium transition-elegant ml-1">
-              Zaloguj się tutaj
+              Log in here
             </a>
           </p>
         </div>
@@ -153,7 +153,7 @@
     </div>
 
     <p class="text-center text-xs text-secondary mt-8">
-      Rejestrując się, akceptujesz nasze warunki użytkowania i politykę prywatności
+      By signing up, you accept our terms of service and privacy policy
     </p>
   </div>
 </div>

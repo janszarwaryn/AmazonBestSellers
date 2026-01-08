@@ -14,7 +14,7 @@
             routerLinkActive="text-accent border-accent"
             [routerLinkActiveOptions]="{exact: false}"
             class="text-sm font-medium text-secondary hover:text-primary border-b-2 border-transparent hover:border-primary transition-elegant pb-1">
-            Produkty
+            Products
           </a>
           @if (isAuthenticated()) {
             <a
@@ -22,7 +22,7 @@
               routerLinkActive="text-accent border-accent"
               class="text-sm font-medium text-secondary hover:text-primary border-b-2 border-transparent hover:border-primary transition-elegant pb-1 flex items-center space-x-1">
               <i class="pi pi-heart text-sm"></i>
-              <span>Ulubione</span>
+              <span>Favorites</span>
             </a>
           }
         </div>
@@ -41,7 +41,7 @@
               (click)="logout()"
               class="px-4 py-2 text-sm font-medium text-secondary hover:text-primary border border-gray-300 rounded-lg hover:border-primary transition-elegant flex items-center space-x-2">
               <i class="pi pi-sign-out"></i>
-              <span>Wyloguj</span>
+              <span>Logout</span>
             </button>
           </div>
         } @else {
@@ -49,12 +49,12 @@
             <button
               routerLink="/login"
               class="px-4 py-2 text-sm font-medium text-primary hover:text-accent transition-elegant">
-              Zaloguj się
+              Log in
             </button>
             <button
               routerLink="/register"
               class="px-6 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-dark rounded-lg shadow-sm hover:shadow-md transition-elegant">
-              Rejestracja
+              Sign up
             </button>
           </div>
         }

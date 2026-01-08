@@ -7,7 +7,7 @@
         Amazon Bestsellers
       </h1>
       <p class="text-xl text-secondary">
-        Odkryj najpopularniejsze produkty na Amazon
+        Discover the most popular products on Amazon
       </p>
     </div>
 
@@ -17,7 +17,7 @@
           <div class="flex items-start">
             <i class="pi pi-exclamation-circle text-red-500 text-2xl mt-1 mr-4"></i>
             <div>
-              <h3 class="text-lg font-semibold text-red-900 mb-1">Błąd</h3>
+              <h3 class="text-lg font-semibold text-red-900 mb-1">Error</h3>
               <p class="text-red-700">{{ errorMessage() }}</p>
             </div>
           </div>
@@ -42,10 +42,10 @@
           <i class="pi pi-inbox text-secondary text-5xl"></i>
         </div>
         <h3 class="text-2xl font-heading font-semibold text-primary mb-2">
-          Brak produktów
+          No products
         </h3>
         <p class="text-secondary">
-          Nie znaleziono żadnych produktów
+          No products found
         </p>
       </div>
     } @else {
@@ -105,7 +105,7 @@
                         (click)="addToFavorites(product)"
                         class="w-full px-4 py-2.5 bg-accent hover:bg-accent-dark text-white rounded-lg transition-elegant text-sm font-medium flex items-center justify-center space-x-2">
                         <i class="pi pi-heart text-sm"></i>
-                        <span>Dodaj do ulubionych</span>
+                        <span>Add to favorites</span>
                       </button>
                     }
                   </div>

@@ -5,10 +5,10 @@
         <i class="pi pi-sign-in text-white text-3xl"></i>
       </div>
       <h1 class="text-5xl font-heading font-bold text-primary mb-3 tracking-tight">
-        Witaj ponownie
+        Welcome back
       </h1>
       <p class="text-secondary text-base">
-        Zaloguj się, aby kontynuować
+        Log in to continue
       </p>
     </div>
 
@@ -25,13 +25,13 @@
 
         <div class="space-y-2">
           <label for="username" class="block text-sm font-medium text-primary mb-2">
-            Nazwa użytkownika
+            Username
           </label>
           <input
             pInputText
             id="username"
             formControlName="username"
-            placeholder="Wpisz nazwę użytkownika"
+            placeholder="Enter your username"
             class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
             [class.border-red-500]="username?.invalid && username?.touched"
           />
@@ -39,10 +39,10 @@
             <small class="text-red-500 text-xs mt-1 flex items-center">
               <i class="pi pi-times-circle text-xs mr-1"></i>
               @if (username?.errors?.['required']) {
-                Nazwa użytkownika jest wymagana
+                Username is required
               }
               @if (username?.errors?.['minlength']) {
-                Nazwa użytkownika musi mieć minimum 5 znaków
+                Username must be at least 5 characters
               }
             </small>
           }
@@ -50,13 +50,13 @@
 
         <div class="space-y-2">
           <label for="password" class="block text-sm font-medium text-primary mb-2">
-            Hasło
+            Password
           </label>
           <p-password
             formControlName="password"
             [feedback]="false"
             [toggleMask]="true"
-            placeholder="Wpisz hasło"
+            placeholder="Enter your password"
             styleClass="w-full"
             inputStyleClass="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
             [class.border-red-500]="password?.invalid && password?.touched"
@@ -65,10 +65,10 @@
             <small class="text-red-500 text-xs mt-1 flex items-center">
               <i class="pi pi-times-circle text-xs mr-1"></i>
               @if (password?.errors?.['required']) {
-                Hasło jest wymagane
+                Password is required
               }
               @if (password?.errors?.['minlength']) {
-                Hasło musi mieć minimum 8 znaków
+                Password must be at least 8 characters
               }
             </small>
           }
@@ -80,18 +80,18 @@
           class="w-full bg-accent hover:bg-accent-dark text-white font-medium py-3.5 rounded-lg shadow-sm hover:shadow-md transition-elegant flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed">
           @if (loading()) {
             <i class="pi pi-spin pi-spinner"></i>
-            <span>Logowanie...</span>
+            <span>Logging in...</span>
           } @else {
             <i class="pi pi-sign-in"></i>
-            <span>Zaloguj się</span>
+            <span>Log in</span>
           }
         </button>
 
         <div class="text-center pt-4 border-t border-gray-100">
           <p class="text-sm text-secondary">
-            Nie masz jeszcze konta?
+            Don't have an account?
             <a routerLink="/register" class="text-accent hover:text-accent-dark font-medium transition-elegant ml-1">
-              Zarejestruj się tutaj
+              Sign up here
             </a>
           </p>
         </div>
@@ -99,7 +99,7 @@
     </div>
 
     <p class="text-center text-xs text-secondary mt-8">
-      Logując się, akceptujesz nasze warunki użytkowania
+      By logging in, you accept our terms of service
     </p>
   </div>
 </div>
