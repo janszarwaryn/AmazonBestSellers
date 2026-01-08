@@ -17,8 +17,7 @@ import { Favorite } from '@core/models';
     ConfirmDialogModule
   ],
   providers: [MessageService, ConfirmationService],
-  templateUrl: './favorites-list.component.html',
-  styleUrl: './favorites-list.component.css'
+  templateUrl: './favorites-list.component.html'
 })
 export class FavoritesListComponent implements OnInit {
   private readonly favoritesService = inject(FavoritesService);

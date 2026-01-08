@@ -11,8 +11,7 @@ import { AuthService } from '@core/services/auth.service';
     RouterLink,
     RouterLinkActive
   ],
-  templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.css'
+  templateUrl: './navigation.component.html'
 })
 export class NavigationComponent {
   private readonly authService = inject(AuthService);

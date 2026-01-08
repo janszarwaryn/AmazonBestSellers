@@ -5,8 +5,7 @@ import { NavigationComponent } from '@shared/components/navigation/navigation.co
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NavigationComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   title = 'amazon-bestsellers-app';

@@ -17,7 +17,6 @@ import { AuthService } from '@core/services/auth.service';
     PasswordModule
   ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
 })
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
