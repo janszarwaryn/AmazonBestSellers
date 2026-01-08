@@ -1,0 +1,65 @@
+<div class="auth-container">
+  <p-card header="Login" class="auth-card">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      @if (errorMessage()) {
+        <p-message severity="error" [text]="errorMessage()!" class="error-message"></p-message>
+      }
+
+      <div class="form-field">
+        <label for="username">Username</label>
+        <input
+          pInputText
+          id="username"
+          formControlName="username"
+          placeholder="Enter your username"
+          [class.ng-invalid]="username?.invalid && username?.touched"
+        />
+        @if (username?.invalid && username?.touched) {
+          <small class="error-text">
+            @if (username?.errors?.['required']) {
+              Username is required
+            }
+            @if (username?.errors?.['minlength']) {
+              Username must be at least 5 characters
+            }
+          </small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+        <p-password
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          placeholder="Enter your password"
+          [class.ng-invalid]="password?.invalid && password?.touched"
+        ></p-password>
+        @if (password?.invalid && password?.touched) {
+          <small class="error-text">
+            @if (password?.errors?.['required']) {
+              Password is required
+            }
+            @if (password?.errors?.['minlength']) {
+              Password must be at least 8 characters
+            }
+          </small>
+        }
+      </div>
+
+      <button
+        pButton
+        type="submit"
+        label="Login"
+        class="submit-button"
+        [loading]="loading()"
+        [disabled]="loading()"
+      ></button>
+
+      <div class="link-container">
+        <span>Don't have an account? </span>
+        <a routerLink="/register" class="link">Register here</a>
+      </div>
+    </form>
+  </p-card>
+</div>

@@ -1,0 +1,24 @@
+services:
+  mariadb:
+    image: mariadb:11.2
+    container_name: amazon-bestsellers-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-AmazonBestSellersDb}
+      MYSQL_USER: ${DB_USER:-amazonuser}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-amazonpass123}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./docker/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mariadb_data:
+    driver: local

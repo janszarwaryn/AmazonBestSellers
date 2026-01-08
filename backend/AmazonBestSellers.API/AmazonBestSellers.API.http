@@ -1,0 +1,6 @@
+@AmazonBestSellers.API_HostAddress = http://localhost:5211
+
+GET {{AmazonBestSellers.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

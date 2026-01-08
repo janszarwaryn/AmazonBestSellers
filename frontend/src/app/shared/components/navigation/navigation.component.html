@@ -1,0 +1,43 @@
+<p-menubar [model]="menuItems" class="navigation-bar">
+  <ng-template pTemplate="start">
+    <div class="logo" routerLink="/products">
+      <i class="pi pi-bolt"></i>
+      <span class="logo-text">Amazon Bestsellers</span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    @if (isAuthenticated()) {
+      <div class="user-section">
+        <span class="username">
+          <i class="pi pi-user"></i>
+          {{ currentUser()?.username }}
+        </span>
+        <button
+          pButton
+          label="Logout"
+          icon="pi pi-sign-out"
+          class="p-button-text"
+          (click)="logout()"
+        ></button>
+      </div>
+    } @else {
+      <div class="auth-links">
+        <button
+          pButton
+          label="Login"
+          icon="pi pi-sign-in"
+          class="p-button-text"
+          routerLink="/login"
+        ></button>
+        <button
+          pButton
+          label="Register"
+          icon="pi pi-user-plus"
+          class="p-button-outlined"
+          routerLink="/register"
+        ></button>
+      </div>
+    }
+  </ng-template>
+</p-menubar>
