@@ -5,10 +5,10 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="mb-16 text-center">
       <h1 class="text-6xl font-heading font-bold text-primary mb-4 tracking-tight">
-        Moje ulubione
+        My Favorites
       </h1>
       <p class="text-xl text-secondary">
-        Twoja kolekcja ulubionych produktów
+        Your collection of favorite products
       </p>
     </div>
 
@@ -18,7 +18,7 @@
           <div class="flex items-start">
             <i class="pi pi-exclamation-circle text-red-500 text-2xl mt-1 mr-4"></i>
             <div>
-              <h3 class="text-lg font-semibold text-red-900 mb-1">Błąd</h3>
+              <h3 class="text-lg font-semibold text-red-900 mb-1">Error</h3>
               <p class="text-red-700">{{ errorMessage() }}</p>
             </div>
           </div>
@@ -52,7 +52,7 @@
           routerLink="/products"
           class="inline-flex items-center space-x-2 px-6 py-3 bg-accent hover:bg-accent-dark text-white rounded-lg shadow-sm hover:shadow-md transition-elegant font-medium">
           <i class="pi pi-shopping-bag"></i>
-          <span>Przeglądaj produkty</span>
+          <span>Browse Products</span>
         </a>
       </div>
     } @else {
@@ -99,7 +99,7 @@
 
                 <div class="flex items-center space-x-2 text-xs text-secondary mb-4 pb-4 border-b border-gray-100">
                   <i class="pi pi-calendar text-xs"></i>
-                  <span>Dodano {{ formatDate(favorite.createdAt) }}</span>
+                  <span>Added {{ formatDate(favorite.createdAt) }}</span>
                 </div>
 
                 <div class="mt-auto">
