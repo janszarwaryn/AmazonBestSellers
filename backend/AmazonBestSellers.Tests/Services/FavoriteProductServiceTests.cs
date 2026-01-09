@@ -1,6 +1,7 @@
 using AmazonBestSellers.Application.DTOs.Favorites;
 using AmazonBestSellers.Application.Services.Implementations;
 using AmazonBestSellers.Domain.Entities;
+using AmazonBestSellers.Domain.Exceptions;
 using AmazonBestSellers.Domain.Interfaces.Repositories;
 using Moq;
 using Xunit;
@@ -136,7 +137,7 @@ public class FavoriteProductServiceTests
             .ReturnsAsync(favoriteProduct);
 
         // Act & Assert
-        await Assert.ThrowsAsync<UnauthorizedAccessException>(
+        await Assert.ThrowsAsync<ForbiddenAccessException>(
             () => _favoriteService.RemoveFavoriteAsync(userId, favoriteId)
         );
     }

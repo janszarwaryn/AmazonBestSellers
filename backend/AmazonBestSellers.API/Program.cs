@@ -46,6 +46,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 
+// Response Caching for RapidAPI proxy (10 min TTL to reduce API calls)
+builder.Services.AddResponseCaching();
+builder.Services.AddMemoryCache();
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -67,6 +71,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Response Caching middleware (must be before UseCors)
+app.UseResponseCaching();
 
 app.UseCors("AllowAngularApp");
 

@@ -1,6 +1,6 @@
 using AmazonBestSellers.Application.DTOs.Auth;
 using AmazonBestSellers.Application.Services.Interfaces;
-using AmazonBestSellers.Application.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AmazonBestSellers.API.Controllers;
@@ -10,17 +10,23 @@ namespace AmazonBestSellers.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly IValidator<RegisterRequestDto> _registerValidator;
+    private readonly IValidator<LoginRequestDto> _loginValidator;
 
-    public AuthController(IAuthService authService)
+    public AuthController(
+        IAuthService authService,
+        IValidator<RegisterRequestDto> registerValidator,
+        IValidator<LoginRequestDto> loginValidator)
     {
         _authService = authService;
+        _registerValidator = registerValidator;
+        _loginValidator = loginValidator;
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterRequestDto request)
     {
-        var validator = new RegisterRequestValidator();
-        var validationResult = await validator.ValidateAsync(request);
+        var validationResult = await _registerValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
@@ -39,8 +45,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginRequestDto request)
     {
-        var validator = new LoginRequestValidator();
-        var validationResult = await validator.ValidateAsync(request);
+        var validationResult = await _loginValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);

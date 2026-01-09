@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using AmazonBestSellers.Domain.Exceptions;
 
 namespace AmazonBestSellers.API.Middleware;
 
@@ -34,6 +35,7 @@ public class ExceptionHandlingMiddleware
         var (statusCode, message) = exception switch
         {
             UnauthorizedAccessException => (HttpStatusCode.Unauthorized, exception.Message),
+            ForbiddenAccessException => (HttpStatusCode.Forbidden, exception.Message),
             KeyNotFoundException => (HttpStatusCode.NotFound, exception.Message),
             InvalidOperationException => (HttpStatusCode.BadRequest, exception.Message),
             _ => (HttpStatusCode.InternalServerError, "An error occurred while processing your request")

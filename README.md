@@ -18,27 +18,73 @@ Full-stack application for browsing Amazon bestseller products with user authent
 
 Open http://localhost:4200
 
-## Configuration
+## ⚠️ Security Setup (REQUIRED)
 
-Copy `.env.example` to `.env` and customize values:
+### Environment Variables
+
+**NEVER commit `.env` file to git!** It contains sensitive secrets.
+
+1. Copy example file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Generate secure secrets:
+
+   **JWT Secret (64+ characters):**
+   ```bash
+   openssl rand -base64 64 | tr -d '\n'
+   ```
+
+   **Database Passwords (32+ characters):**
+   ```bash
+   openssl rand -base64 32 | tr -d '\n'
+   ```
+
+3. Get RapidAPI Key:
+   - Subscribe at [RapidAPI - Real-Time Amazon Data](https://rapidapi.com/letscrape-6bRBa3QguO5/api/real-time-amazon-data)
+   - Copy your API key from dashboard
+   - Add to `.env`: `RAPIDAPI_KEY=your_key_here`
+
+4. Set admin credentials in `.env` (CHANGE defaults!):
+   ```
+   ADMIN_USERNAME=your_secure_username
+   ADMIN_PASSWORD=your_secure_password
+   ```
+
+### Test Account
+
+After running `./init.sh`, you can login with credentials you set in `.env` file
+(ADMIN_USERNAME and ADMIN_PASSWORD).
+
+**DO NOT share these credentials publicly!**
+
+### Backend Development Settings (Optional)
+
+**For local development only**, you can create `backend/AmazonBestSellers.API/appsettings.Development.json`:
 
 ```bash
-cp .env.example .env
+# Copy example file
+cp backend/AmazonBestSellers.API/appsettings.Development.json.example \
+   backend/AmazonBestSellers.API/appsettings.Development.json
 ```
 
-### RapidAPI Key (Optional)
+**⚠️ IMPORTANT:**
+- This file is `.gitignore`d and **should NEVER be committed** to git
+- Backend loads secrets from `.env` file via `Program.cs` - appsettings are overridden
+- The example file contains placeholders only - DO NOT add real secrets there
+- All sensitive configuration comes from `.env` file
 
-For real product data:
-1. Subscribe at [RapidAPI - Real-Time Amazon Data](https://rapidapi.com/letscrape-6bRBa3QguO5/api/real-time-amazon-data)
-2. Add key to `.env`:
-   ```
-   RAPIDAPI_KEY=your_key_here
-   ```
+**Architecture:** Backend uses **secure proxy pattern** for RapidAPI:
+```
+Frontend → Backend API (/api/products/bestsellers) → RapidAPI
+```
 
-## Test Account
+This keeps API keys secure on backend only, enables caching, and prevents CORS issues.
 
-Username: `admin`
-Password: `Admin123!@#`
+## Configuration
+
+The `.env` file should be configured with all required variables. See `.env.example` for reference.
 
 ## Technologies
 
@@ -56,6 +102,8 @@ Password: `Admin123!@#`
 - `AuthServiceTests` (5 tests) - User registration, login, validation
 - `FavoriteProductServiceTests` (7 tests) - Add, remove, list favorites
 - `PasswordHasherTests` (6 tests) - BCrypt hashing and verification
+- `JwtTokenServiceTests` (2 tests) - JWT token generation and validation
+- `UserRepositoryTests` (2 tests) - Database user operations
 
 **Run all tests:**
 ```bash
@@ -69,7 +117,7 @@ cd backend
 dotnet test --verbosity detailed
 ```
 
-**Expected result:** 18 tests passed, 0 failed
+**Expected result:** 22 tests passed, 0 failed
 
 ### E2E Tests (Playwright)
 

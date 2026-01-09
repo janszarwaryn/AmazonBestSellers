@@ -4,10 +4,12 @@ services:
     container_name: amazon-bestsellers-db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
-      MYSQL_DATABASE: ${DB_NAME:-AmazonBestSellersDb}
-      MYSQL_USER: ${DB_USER:-amazonuser}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-amazonpass123}
+      # All credentials must be provided via .env file
+      # DO NOT use default values in production!
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "${DB_PORT:-3306}:3306"
     volumes:

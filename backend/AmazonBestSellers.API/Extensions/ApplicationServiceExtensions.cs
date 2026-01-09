@@ -1,9 +1,11 @@
 using AmazonBestSellers.Application.Common;
 using AmazonBestSellers.Application.Services.Implementations;
 using AmazonBestSellers.Application.Services.Interfaces;
+using AmazonBestSellers.Application.Validators;
 using AmazonBestSellers.Domain.Interfaces.Repositories;
 using AmazonBestSellers.Infrastructure.ExternalServices;
 using AmazonBestSellers.Infrastructure.Repositories;
+using FluentValidation;
 
 namespace AmazonBestSellers.API.Extensions;
 
@@ -12,6 +14,9 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+
+        // Register FluentValidation validators from Application assembly
+        services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IFavoriteProductRepository, FavoriteProductRepository>();

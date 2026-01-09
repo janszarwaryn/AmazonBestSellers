@@ -1,6 +1,7 @@
 using AmazonBestSellers.Application.DTOs.Favorites;
 using AmazonBestSellers.Application.Services.Interfaces;
 using AmazonBestSellers.Domain.Entities;
+using AmazonBestSellers.Domain.Exceptions;
 using AmazonBestSellers.Domain.Interfaces.Repositories;
 
 namespace AmazonBestSellers.Application.Services.Implementations;
@@ -70,7 +71,7 @@ public class FavoriteProductService : IFavoriteProductService
             throw new KeyNotFoundException("Favorite not found");
 
         if (favorite.UserId != userId)
-            throw new UnauthorizedAccessException("Not authorized to remove this favorite");
+            throw new ForbiddenAccessException("You don't have permission to remove this favorite");
 
         await _favoriteProductRepository.DeleteAsync(favoriteId);
     }

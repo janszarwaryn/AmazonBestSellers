@@ -1,0 +1,25 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Configuration loaded from .env file via Program.cs - DO NOT add real connection strings here!"
+  },
+  "Jwt": {
+    "Secret": "Configuration loaded from .env file via Program.cs",
+    "Issuer": "Configuration loaded from .env file via Program.cs",
+    "Audience": "Configuration loaded from .env file via Program.cs",
+    "ExpireMinutes": "Configuration loaded from .env file via Program.cs"
+  },
+  "RapidAPI": {
+    "Key": "Configuration loaded from .env file via Program.cs",
+    "Host": "Configuration loaded from .env file via Program.cs",
+    "BaseUrl": "Configuration loaded from .env file via Program.cs"
+  },
+  "Cors": {
+    "AllowedOrigins": ["Configuration loaded from .env file via Program.cs"]
+  }
+}

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AmazonBestSellers.Application.DTOs.Favorites;
 using AmazonBestSellers.Application.Services.Interfaces;
+using AmazonBestSellers.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,6 +71,10 @@ public class FavoritesController : ControllerBase
         catch (KeyNotFoundException ex)
         {
             return NotFound(new { message = ex.Message });
+        }
+        catch (ForbiddenAccessException ex)
+        {
+            return StatusCode(403, new { message = ex.Message });
         }
         catch (UnauthorizedAccessException ex)
         {

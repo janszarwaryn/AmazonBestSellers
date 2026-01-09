@@ -5,6 +5,17 @@ set -e
 echo "Step 2: Database Migration"
 echo ""
 
+# Load environment variables from .env file
+if [ -f "../.env" ]; then
+    source ../.env
+elif [ -f ".env" ]; then
+    source .env
+else
+    echo "Error: .env file not found"
+    echo "Please copy .env.example to .env and configure it"
+    exit 1
+fi
+
 if ! command -v dotnet &> /dev/null; then
     echo "Error: .NET SDK is not installed"
     echo "Please install .NET 9.0 SDK"
@@ -67,7 +78,7 @@ dotnet ef database update --project ../AmazonBestSellers.Infrastructure
 
 echo ""
 echo "Verifying database tables..."
-docker exec amazon-bestsellers-db mariadb -u amazonuser -pamazonpass123 AmazonBestSellersDb -e "SHOW TABLES;"
+docker exec amazon-bestsellers-db mariadb -u ${DB_USER} -p${DB_PASSWORD} AmazonBestSellersDb -e "SHOW TABLES;"
 
 echo ""
 echo "Database migration complete"
