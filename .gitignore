@@ -79,6 +79,10 @@ testem.log
 playwright-report/
 test-results/
 playwright/.cache/
+.playwright-mcp/
+
+# Claude Code
+.claude/
 
 # Environment files
 .env

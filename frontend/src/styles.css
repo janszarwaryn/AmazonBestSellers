@@ -5,25 +5,6 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-primary: #1a1a1a;
-    --color-primary-light: #2d2d2d;
-    --color-secondary: #6b7280;
-    --color-secondary-light: #9ca3af;
-    --color-accent: #d97706;
-    --color-accent-light: #f59e0b;
-    --color-accent-dark: #b45309;
-    --color-surface: #fafaf9;
-    --color-surface-card: #ffffff;
-
-    --font-heading: 'Crimson Pro', serif;
-    --font-body: 'Manrope', sans-serif;
-
-    --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-    --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    --shadow-elegant: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  }
-
   * {
     margin: 0;
     padding: 0;
@@ -35,28 +16,12 @@
   }
 
   body {
-    font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background-color: var(--color-surface);
-    color: var(--color-primary);
-    line-height: 1.6;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    line-height: 1.2;
-  }
-}
-
-@layer utilities {
-  .transition-elegant {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Crimson Pro', Georgia, serif;
   }
 }

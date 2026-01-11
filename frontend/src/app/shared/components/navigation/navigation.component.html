@@ -1,26 +1,26 @@
-<nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+<nav class="bg-linen border-b border-stone/10 sticky top-0 z-50 shadow-sm">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-20">
       <div class="flex items-center space-x-12">
         <a routerLink="/products" class="group cursor-pointer">
-          <span class="text-2xl font-heading font-bold text-primary tracking-tight hover:text-accent transition-elegant">
-            Amazon <span class="text-accent">Bestsellers</span>
+          <span class="text-2xl font-heading font-bold text-charcoal tracking-tight hover:text-clay transition-all duration-elegant ease-elegant">
+            Amazon <span class="text-clay">Bestsellers</span>
           </span>
         </a>
 
         <div class="hidden md:flex items-center space-x-8">
           <a
             routerLink="/products"
-            routerLinkActive="text-accent border-accent"
+            routerLinkActive="text-clay border-clay"
             [routerLinkActiveOptions]="{exact: false}"
-            class="text-sm font-medium text-secondary hover:text-primary border-b-2 border-transparent hover:border-primary transition-elegant pb-1">
+            class="text-sm font-medium text-stone hover:text-charcoal border-b-2 border-transparent hover:border-clay transition-all duration-elegant ease-elegant pb-1">
             Products
           </a>
           @if (isAuthenticated()) {
             <a
               routerLink="/favorites"
-              routerLinkActive="text-accent border-accent"
-              class="text-sm font-medium text-secondary hover:text-primary border-b-2 border-transparent hover:border-primary transition-elegant pb-1 flex items-center space-x-1">
+              routerLinkActive="text-clay border-clay"
+              class="text-sm font-medium text-stone hover:text-charcoal border-b-2 border-transparent hover:border-clay transition-all duration-elegant ease-elegant pb-1 flex items-center space-x-1">
               <i class="pi pi-heart text-sm"></i>
               <span>Favorites</span>
             </a>
@@ -31,15 +31,15 @@
       <div class="flex items-center space-x-4">
         @if (isAuthenticated()) {
           <div class="flex items-center space-x-4">
-            <div class="hidden sm:flex items-center space-x-2 px-4 py-2 bg-surface rounded-lg">
-              <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+            <div class="hidden sm:flex items-center space-x-2 px-4 py-2 bg-parchment rounded-lg">
+              <div class="w-8 h-8 bg-sage rounded-full flex items-center justify-center">
                 <span class="text-white text-sm font-semibold">{{ currentUser()?.username?.charAt(0)?.toUpperCase() }}</span>
               </div>
-              <span class="text-sm font-medium text-primary">{{ currentUser()?.username }}</span>
+              <span class="text-sm font-medium text-charcoal">{{ currentUser()?.username }}</span>
             </div>
             <button
               (click)="logout()"
-              class="px-4 py-2 text-sm font-medium text-secondary hover:text-primary border border-gray-300 rounded-lg hover:border-primary transition-elegant flex items-center space-x-2">
+              class="px-4 py-2 text-sm font-medium text-stone hover:text-charcoal border border-gray-300 rounded-lg hover:border-clay transition-all duration-elegant ease-elegant flex items-center space-x-2">
               <i class="pi pi-sign-out"></i>
               <span>Logout</span>
             </button>
@@ -48,12 +48,12 @@
           <div class="flex items-center space-x-3">
             <button
               routerLink="/login"
-              class="px-4 py-2 text-sm font-medium text-primary hover:text-accent transition-elegant">
+              class="px-4 py-2 text-sm font-medium text-charcoal hover:text-clay transition-all duration-elegant ease-elegant">
               Log in
             </button>
             <button
               routerLink="/register"
-              class="px-6 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-dark rounded-lg shadow-sm hover:shadow-md transition-elegant">
+              class="px-6 py-2 text-sm font-medium text-white bg-clay hover:bg-clay-dark rounded-xl shadow-sm hover:shadow-md transition-all duration-elegant ease-elegant">
               Sign up
             </button>
           </div>

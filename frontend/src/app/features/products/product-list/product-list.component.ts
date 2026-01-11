@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataViewModule } from 'primeng/dataview';
 import { ToastModule } from 'primeng/toast';
@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { ProductsService } from '@core/services/products.service';
 import { FavoritesService } from '@core/services/favorites.service';
 import { AuthService } from '@core/services/auth.service';
-import { Product } from '@core/models';
+import { Product, Favorite } from '@core/models';
 
 @Component({
   selector: 'app-product-list',
@@ -26,6 +26,7 @@ export class ProductListComponent implements OnInit {
   private readonly messageService = inject(MessageService);
 
   products = signal<Product[]>([]);
+  favorites = signal<Favorite[]>([]);
   loading = signal(true);
   errorMessage = signal<string | null>(null);
 
@@ -33,6 +34,9 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
+    if (this.isAuthenticated()) {
+      this.loadFavorites();
+    }
   }
 
   loadProducts(): void {
@@ -49,6 +53,25 @@ export class ProductListComponent implements OnInit {
         this.errorMessage.set(error.error?.message || 'Failed to load products. Please try again.');
       }
     });
+  }
+
+  loadFavorites(): void {
+    this.favoritesService.getFavorites().subscribe({
+      next: (favorites) => {
+        this.favorites.set(favorites);
+      },
+      error: (error) => {
+        console.error('Failed to load favorites:', error);
+      }
+    });
+  }
+
+  isFavorite(asin: string): boolean {
+    return this.favorites().some(fav => fav.asin === asin);
+  }
+
+  getFavoriteId(asin: string): number | undefined {
+    return this.favorites().find(fav => fav.asin === asin)?.id;
   }
 
   addToFavorites(product: Product): void {
@@ -71,7 +94,8 @@ export class ProductListComponent implements OnInit {
     };
 
     this.favoritesService.addFavorite(favorite).subscribe({
-      next: () => {
+      next: (newFavorite) => {
+        this.favorites.update(favs => [...favs, newFavorite]);
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -83,6 +107,29 @@ export class ProductListComponent implements OnInit {
           severity: 'error',
           summary: 'Error',
           detail: error.error?.message || 'Failed to add to favorites'
+        });
+      }
+    });
+  }
+
+  removeFromFavorites(asin: string): void {
+    const favoriteId = this.getFavoriteId(asin);
+    if (!favoriteId) return;
+
+    this.favoritesService.removeFavorite(favoriteId).subscribe({
+      next: () => {
+        this.favorites.update(favs => favs.filter(f => f.id !== favoriteId));
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Product removed from favorites'
+        });
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error?.message || 'Failed to remove from favorites'
         });
       }
     });

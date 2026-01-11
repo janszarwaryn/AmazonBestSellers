@@ -1,18 +1,6 @@
-<div class="min-h-screen bg-surface flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-sand flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full">
-    <div class="text-center mb-12">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-accent rounded-2xl mb-6 shadow-elegant">
-        <i class="pi pi-user-plus text-white text-3xl"></i>
-      </div>
-      <h1 class="text-5xl font-heading font-bold text-primary mb-3 tracking-tight">
-        Join us
-      </h1>
-      <p class="text-secondary text-base">
-        Create your account in moments
-      </p>
-    </div>
-
-    <div class="bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-elegant p-8">
+    <div class="bg-linen rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-elegant ease-elegant p-8">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
         @if (errorMessage()) {
           <div class="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -24,7 +12,7 @@
         }
 
         <div class="space-y-2">
-          <label for="username" class="block text-sm font-medium text-primary mb-2">
+          <label for="username" class="block text-sm font-medium text-charcoal mb-2">
             Username
           </label>
           <input
@@ -32,7 +20,7 @@
             id="username"
             formControlName="username"
             placeholder="Enter your username"
-            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
+            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-clay/30 focus:border-clay focus:border-transparent transition-elegant"
             [class.border-red-500]="username?.invalid && username?.touched"
           />
           @if (username?.invalid && username?.touched) {
@@ -52,7 +40,7 @@
         </div>
 
         <div class="space-y-2">
-          <label for="password" class="block text-sm font-medium text-primary mb-2">
+          <label for="password" class="block text-sm font-medium text-charcoal mb-2">
             Password
           </label>
           <p-password
@@ -61,7 +49,7 @@
             [toggleMask]="true"
             placeholder="Enter your password"
             styleClass="w-full"
-            inputStyleClass="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
+            inputStyleClass="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-clay/30 focus:border-clay focus:border-transparent transition-elegant"
             [class.border-red-500]="password?.invalid && password?.touched"
           ></p-password>
           @if (password?.invalid && password?.touched) {
@@ -103,7 +91,7 @@
         </div>
 
         <div class="space-y-2">
-          <label for="passwordConfirm" class="block text-sm font-medium text-primary mb-2">
+          <label for="passwordConfirm" class="block text-sm font-medium text-charcoal mb-2">
             Confirm password
           </label>
           <p-password
@@ -112,7 +100,7 @@
             [toggleMask]="true"
             placeholder="Confirm your password"
             styleClass="w-full"
-            inputStyleClass="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-elegant"
+            inputStyleClass="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-clay/30 focus:border-clay focus:border-transparent transition-elegant"
             [class.border-red-500]="passwordConfirm?.invalid && passwordConfirm?.touched"
           ></p-password>
           @if (passwordConfirm?.invalid && passwordConfirm?.touched) {
@@ -131,7 +119,7 @@
         <button
           type="submit"
           [disabled]="loading()"
-          class="w-full bg-accent hover:bg-accent-dark text-white font-medium py-3.5 rounded-lg shadow-sm hover:shadow-md transition-elegant flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed">
+          class="w-full bg-clay hover:bg-clay-dark text-white font-medium py-3.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-elegant ease-elegant flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed">
           @if (loading()) {
             <i class="pi pi-spin pi-spinner"></i>
             <span>Signing up...</span>
@@ -142,18 +130,14 @@
         </button>
 
         <div class="text-center pt-4 border-t border-gray-100">
-          <p class="text-sm text-secondary">
+          <p class="text-sm text-stone">
             Already have an account?
-            <a routerLink="/login" class="text-accent hover:text-accent-dark font-medium transition-elegant ml-1">
+            <a routerLink="/login" class="text-clay hover:text-clay-dark font-medium transition-all duration-elegant ml-1">
               Log in here
             </a>
           </p>
         </div>
       </form>
     </div>
-
-    <p class="text-center text-xs text-secondary mt-8">
-      By signing up, you accept our terms of service and privacy policy
-    </p>
   </div>
 </div>
