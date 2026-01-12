@@ -30,7 +30,6 @@ public class AuthServiceTests
     [Fact]
     public async Task RegisterAsync_WithNewUser_ReturnsAuthResponse()
     {
-        // Arrange
         var registerDto = new RegisterRequestDto
         {
             Username = "newuser",
@@ -46,10 +45,8 @@ public class AuthServiceTests
         _jwtTokenServiceMock.Setup(j => j.GenerateToken(It.IsAny<User>()))
             .Returns("jwt.token.here");
 
-        // Act
         var result = await _authService.RegisterAsync(registerDto);
 
-        // Assert
         Assert.NotNull(result);
         Assert.Equal("jwt.token.here", result.Token);
         Assert.Equal(registerDto.Username, result.Username);
@@ -59,7 +56,6 @@ public class AuthServiceTests
     [Fact]
     public async Task RegisterAsync_WithExistingUsername_ThrowsException()
     {
-        // Arrange
         var registerDto = new RegisterRequestDto
         {
             Username = "existinguser",
@@ -69,7 +65,6 @@ public class AuthServiceTests
         _userRepositoryMock.Setup(r => r.ExistsAsync(registerDto.Username))
             .ReturnsAsync(true);
 
-        // Act & Assert
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => _authService.RegisterAsync(registerDto)
         );
@@ -78,7 +73,6 @@ public class AuthServiceTests
     [Fact]
     public async Task LoginAsync_WithValidCredentials_ReturnsAuthResponse()
     {
-        // Arrange
         var loginDto = new LoginRequestDto
         {
             Username = "testuser",
@@ -99,10 +93,8 @@ public class AuthServiceTests
         _jwtTokenServiceMock.Setup(j => j.GenerateToken(user))
             .Returns("jwt.token.here");
 
-        // Act
         var result = await _authService.LoginAsync(loginDto);
 
-        // Assert
         Assert.NotNull(result);
         Assert.Equal("jwt.token.here", result.Token);
         Assert.Equal(user.Username, result.Username);
@@ -112,7 +104,6 @@ public class AuthServiceTests
     [Fact]
     public async Task LoginAsync_WithInvalidUsername_ThrowsException()
     {
-        // Arrange
         var loginDto = new LoginRequestDto
         {
             Username = "nonexistent",
@@ -122,7 +113,6 @@ public class AuthServiceTests
         _userRepositoryMock.Setup(r => r.GetByUsernameAsync(loginDto.Username))
             .ReturnsAsync((User?)null);
 
-        // Act & Assert
         await Assert.ThrowsAsync<UnauthorizedAccessException>(
             () => _authService.LoginAsync(loginDto)
         );
@@ -131,7 +121,6 @@ public class AuthServiceTests
     [Fact]
     public async Task LoginAsync_WithInvalidPassword_ThrowsException()
     {
-        // Arrange
         var loginDto = new LoginRequestDto
         {
             Username = "testuser",
@@ -150,7 +139,6 @@ public class AuthServiceTests
         _passwordHasherMock.Setup(h => h.VerifyPassword(loginDto.Password, user.PasswordHash))
             .Returns(false);
 
-        // Act & Assert
         await Assert.ThrowsAsync<UnauthorizedAccessException>(
             () => _authService.LoginAsync(loginDto)
         );

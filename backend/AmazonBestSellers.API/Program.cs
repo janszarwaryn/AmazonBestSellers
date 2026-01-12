@@ -102,7 +102,31 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapGet("/health", () => Results.Ok(new
+{
+    status = "healthy",
+    timestamp = DateTime.UtcNow,
+    version = "1.0.0"
+})).AllowAnonymous();
+
 app.UseHttpsRedirection();
+
+// Static files + cache
+app.UseDefaultFiles();
+app.UseStaticFiles(new Microsoft.AspNetCore.StaticFiles.StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        if (ctx.File.Name.EndsWith(".js") || ctx.File.Name.EndsWith(".css"))
+        {
+            ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=31536000,immutable");
+        }
+        else if (ctx.File.Name == "index.html")
+        {
+            ctx.Context.Response.Headers.Append("Cache-Control", "no-cache,no-store,must-revalidate");
+        }
+    }
+});
 
 app.UseIpRateLimiting();
 
@@ -116,5 +140,8 @@ app.UseAuthorization();
 app.UseMiddleware<AuditLoggingMiddleware>();
 
 app.MapControllers();
+
+// SPA fallback
+app.MapFallbackToFile("index.html");
 
 app.Run();

@@ -24,7 +24,6 @@ public class UserRepositoryTests
     [Fact]
     public async Task GetByUsernameAsync_ExistingUser_ReturnsUser()
     {
-        // Arrange
         var user = new User
         {
             Username = "testuser",
@@ -34,10 +33,8 @@ public class UserRepositoryTests
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
 
-        // Act
         var result = await _repository.GetByUsernameAsync("testuser");
 
-        // Assert
         Assert.NotNull(result);
         Assert.Equal("testuser", result.Username);
         Assert.Equal("hashedpassword", result.PasswordHash);
@@ -46,12 +43,9 @@ public class UserRepositoryTests
     [Fact]
     public async Task GetByUsernameAsync_NonExistingUser_ReturnsNull()
     {
-        // Arrange - Empty database
 
-        // Act
         var result = await _repository.GetByUsernameAsync("nonexistent");
 
-        // Assert
         Assert.Null(result);
     }
 }

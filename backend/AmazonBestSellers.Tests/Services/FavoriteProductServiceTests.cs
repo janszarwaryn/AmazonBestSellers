@@ -22,7 +22,6 @@ public class FavoriteProductServiceTests
     [Fact]
     public async Task AddFavoriteAsync_WithNewProduct_ReturnsDto()
     {
-        // Arrange
         var userId = 1;
         var createDto = new CreateFavoriteDto
         {
@@ -39,10 +38,8 @@ public class FavoriteProductServiceTests
         _favoriteRepositoryMock.Setup(r => r.CreateAsync(It.IsAny<FavoriteProduct>()))
             .ReturnsAsync((FavoriteProduct fp) => fp);
 
-        // Act
         var result = await _favoriteService.AddFavoriteAsync(userId, createDto);
 
-        // Assert
         Assert.NotNull(result);
         Assert.Equal(createDto.ASIN, result.ASIN);
         Assert.Equal(createDto.Title, result.Title);
@@ -52,7 +49,6 @@ public class FavoriteProductServiceTests
     [Fact]
     public async Task AddFavoriteAsync_WithExistingProduct_ThrowsException()
     {
-        // Arrange
         var userId = 1;
         var createDto = new CreateFavoriteDto
         {
@@ -65,7 +61,6 @@ public class FavoriteProductServiceTests
         _favoriteRepositoryMock.Setup(r => r.ExistsByUserAndAsinAsync(userId, createDto.ASIN))
             .ReturnsAsync(true);
 
-        // Act & Assert
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => _favoriteService.AddFavoriteAsync(userId, createDto)
         );
@@ -74,7 +69,6 @@ public class FavoriteProductServiceTests
     [Fact]
     public async Task RemoveFavoriteAsync_WithExistingProduct_Succeeds()
     {
-        // Arrange
         var userId = 1;
         var favoriteId = 1;
 
@@ -93,24 +87,20 @@ public class FavoriteProductServiceTests
         _favoriteRepositoryMock.Setup(r => r.DeleteAsync(favoriteId))
             .Returns(Task.CompletedTask);
 
-        // Act
         await _favoriteService.RemoveFavoriteAsync(userId, favoriteId);
 
-        // Assert
         _favoriteRepositoryMock.Verify(r => r.DeleteAsync(favoriteId), Times.Once);
     }
 
     [Fact]
     public async Task RemoveFavoriteAsync_WithNonExistentProduct_ThrowsException()
     {
-        // Arrange
         var userId = 1;
         var favoriteId = 999;
 
         _favoriteRepositoryMock.Setup(r => r.GetByIdAsync(favoriteId))
             .ReturnsAsync((FavoriteProduct?)null);
 
-        // Act & Assert
         await Assert.ThrowsAsync<KeyNotFoundException>(
             () => _favoriteService.RemoveFavoriteAsync(userId, favoriteId)
         );
@@ -119,7 +109,6 @@ public class FavoriteProductServiceTests
     [Fact]
     public async Task RemoveFavoriteAsync_WithDifferentUser_ThrowsException()
     {
-        // Arrange
         var userId = 1;
         var favoriteId = 1;
 
@@ -136,7 +125,6 @@ public class FavoriteProductServiceTests
         _favoriteRepositoryMock.Setup(r => r.GetByIdAsync(favoriteId))
             .ReturnsAsync(favoriteProduct);
 
-        // Act & Assert
         await Assert.ThrowsAsync<ForbiddenAccessException>(
             () => _favoriteService.RemoveFavoriteAsync(userId, favoriteId)
         );
@@ -145,7 +133,6 @@ public class FavoriteProductServiceTests
     [Fact]
     public async Task GetUserFavoritesAsync_ReturnsAllFavorites()
     {
-        // Arrange
         var userId = 1;
         var favorites = new List<FavoriteProduct>
         {
@@ -178,10 +165,8 @@ public class FavoriteProductServiceTests
         _favoriteRepositoryMock.Setup(r => r.GetByUserIdAsync(userId))
             .ReturnsAsync(favorites);
 
-        // Act
         var result = await _favoriteService.GetUserFavoritesAsync(userId);
 
-        // Assert
         Assert.NotNull(result);
         var resultList = result.ToList();
         Assert.Equal(2, resultList.Count);
@@ -192,15 +177,12 @@ public class FavoriteProductServiceTests
     [Fact]
     public async Task GetUserFavoritesAsync_WithNoFavorites_ReturnsEmptyList()
     {
-        // Arrange
         var userId = 1;
         _favoriteRepositoryMock.Setup(r => r.GetByUserIdAsync(userId))
             .ReturnsAsync(new List<FavoriteProduct>());
 
-        // Act
         var result = await _favoriteService.GetUserFavoritesAsync(userId);
 
-        // Assert
         Assert.NotNull(result);
         Assert.Empty(result);
     }

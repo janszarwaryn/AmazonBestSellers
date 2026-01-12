@@ -30,7 +30,6 @@ public class JwtTokenServiceTests
     [Fact]
     public void GenerateToken_ValidUser_ReturnsValidToken()
     {
-        // Arrange
         var user = new User
         {
             Id = 1,
@@ -38,10 +37,8 @@ public class JwtTokenServiceTests
             PasswordHash = "hashedpassword"
         };
 
-        // Act
         var token = _jwtTokenService.GenerateToken(user);
 
-        // Assert
         Assert.NotNull(token);
         Assert.NotEmpty(token);
 
@@ -59,15 +56,12 @@ public class JwtTokenServiceTests
     [Fact]
     public void GenerateToken_MultipleUsers_GeneratesUniqueTokens()
     {
-        // Arrange
         var user1 = new User { Id = 1, Username = "user1", PasswordHash = "hash1" };
         var user2 = new User { Id = 2, Username = "user2", PasswordHash = "hash2" };
 
-        // Act
         var token1 = _jwtTokenService.GenerateToken(user1);
         var token2 = _jwtTokenService.GenerateToken(user2);
 
-        // Assert
         Assert.NotEqual(token1, token2);
     }
 }

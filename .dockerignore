@@ -1,0 +1,46 @@
+.git
+.gitignore
+*.md
+docs/
+
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+node_modules/
+npm-debug.log*
+
+**/bin/
+**/obj/
+**/*.user
+**/TestResults/
+
+**/dist/
+**/.angular/
+**/coverage/
+
+# Env vars (injected by Coolify)
+.env
+.env.*
+
+logs/
+*.log
+
+# Local dev only
+scripts/
+start.sh
+stop.sh
+init.sh
+
+# Tests
+**/*.Tests/
+**/tests/
+e2e/
+**/*.spec.ts
+karma.conf.js
+
+docker-compose.yml
+.dockerignore
+
+**/wwwroot/
