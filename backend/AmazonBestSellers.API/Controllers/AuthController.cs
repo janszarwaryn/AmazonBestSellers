@@ -31,15 +31,8 @@ public class AuthController : ControllerBase
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
 
-        try
-        {
-            var response = await _authService.RegisterAsync(request);
-            return Ok(response);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(new { message = ex.Message });
-        }
+        var response = await _authService.RegisterAsync(request);
+        return Ok(response);
     }
 
     [HttpPost("login")]
@@ -50,14 +43,7 @@ public class AuthController : ControllerBase
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
 
-        try
-        {
-            var response = await _authService.LoginAsync(request);
-            return Ok(response);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return Unauthorized(new { message = ex.Message });
-        }
+        var response = await _authService.LoginAsync(request);
+        return Ok(response);
     }
 }

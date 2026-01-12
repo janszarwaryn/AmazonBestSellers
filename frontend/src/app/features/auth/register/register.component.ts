@@ -1,4 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -17,18 +18,20 @@ import { AuthService } from '@core/services/auth.service';
     PasswordModule
   ],
   templateUrl: './register.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   loading = signal(false);
   errorMessage = signal<string | null>(null);
 
   registerForm = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/^[a-zA-Z0-9]{5,50}$/)]],
-    password: ['', [Validators.required, Validators.minLength(8), this.passwordComplexityValidator]],
+    password: ['', [Validators.required, Validators.minLength(12), this.passwordComplexityValidator]],
     passwordConfirm: ['', [Validators.required]]
   }, { validators: this.passwordMatchValidator });
 
@@ -82,16 +85,18 @@ export class RegisterComponent {
 
     const { username, password } = this.registerForm.value as { username: string; password: string };
 
-    this.authService.register({ username, password }).subscribe({
-      next: () => {
-        this.loading.set(false);
-        this.router.navigate(['/products']);
-      },
-      error: (error) => {
-        this.loading.set(false);
-        this.errorMessage.set(error.error?.message || 'Registration failed. Please try again.');
-      }
-    });
+    this.authService.register({ username, password })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.router.navigate(['/products']);
+        },
+        error: (error) => {
+          this.loading.set(false);
+          this.errorMessage.set(error.error?.message || 'Registration failed. Please try again.');
+        }
+      });
   }
 
   get username() {

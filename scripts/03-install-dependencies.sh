@@ -2,56 +2,56 @@
 
 set -e
 
-echo "Step 3: Install Dependencies"
+echo "step 3: install dependencies"
 echo ""
 
-echo "Installing backend dependencies..."
+echo "installing backend dependencies..."
 if ! cd backend/AmazonBestSellers.API; then
-    echo "Error: Cannot find backend directory"
+    echo "error: cannot find backend directory"
     exit 1
 fi
 
 dotnet restore
 if [ $? -ne 0 ]; then
-    echo "Error: dotnet restore failed"
+    echo "error: dotnet restore failed"
     exit 1
 fi
 
 dotnet build
 if [ $? -ne 0 ]; then
-    echo "Error: dotnet build failed"
+    echo "error: dotnet build failed"
     exit 1
 fi
 
 cd ../..
 
 echo ""
-echo "Installing frontend dependencies..."
+echo "installing frontend dependencies..."
 if ! cd frontend; then
-    echo "Error: Cannot find frontend directory"
+    echo "error: cannot find frontend directory"
     exit 1
 fi
 
 if [ ! -d "node_modules" ]; then
     npm install
     if [ $? -ne 0 ]; then
-        echo "Error: npm install failed"
+        echo "error: npm install failed"
         exit 1
     fi
 else
-    echo "Dependencies already installed"
+    echo "dependencies already installed"
 fi
 
 echo ""
-echo "Building frontend..."
+echo "building frontend..."
 npm run build
 if [ $? -ne 0 ]; then
-    echo "Error: npm build failed"
+    echo "error: npm build failed"
     exit 1
 fi
 
 cd ..
 
 echo ""
-echo "Dependencies installed successfully"
-echo "Projects built successfully"
+echo "dependencies installed"
+echo "projects built"

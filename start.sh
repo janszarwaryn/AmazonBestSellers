@@ -8,19 +8,19 @@ FRONTEND_PID=0
 
 cleanup() {
     echo ""
-    echo "Shutting down services..."
+    echo "shutting down services..."
 
     if [ $BACKEND_PID -ne 0 ]; then
-        echo "Stopping backend (PID: $BACKEND_PID)..."
+        echo "stopping backend (PID: $BACKEND_PID)..."
         kill $BACKEND_PID 2>/dev/null || true
     fi
 
     if [ $FRONTEND_PID -ne 0 ]; then
-        echo "Stopping frontend (PID: $FRONTEND_PID)..."
+        echo "stopping frontend (PID: $FRONTEND_PID)..."
         kill $FRONTEND_PID 2>/dev/null || true
     fi
 
-    echo "Services stopped"
+    echo "services stopped"
     exit 0
 }
 
@@ -28,18 +28,18 @@ trap cleanup SIGINT SIGTERM
 
 clear
 
-echo "Amazon BestSellers Explorer - Starting"
+echo "amazon bestsellers explorer - starting"
 echo ""
 
 if ! docker ps | grep -q amazon-bestsellers-db; then
-    echo "Database not running. Starting..."
+    echo "database not running, starting..."
     docker-compose up -d
     sleep 5
 fi
 
-echo "Starting backend..."
+echo "starting backend..."
 if ! cd backend/AmazonBestSellers.API; then
-    echo "Error: Cannot find backend directory"
+    echo "error: cannot find backend directory"
     exit 1
 fi
 
@@ -50,17 +50,17 @@ cd ../..
 sleep 2
 
 if ! kill -0 $BACKEND_PID 2>/dev/null; then
-    echo "Error: Backend failed to start"
-    echo "Check logs above for details"
+    echo "error: backend failed to start"
+    echo "check logs above for details"
     exit 1
 fi
 
-echo "Backend started (PID: $BACKEND_PID)"
+echo "backend started (PID: $BACKEND_PID)"
 echo ""
 
-echo "Starting frontend..."
+echo "starting frontend..."
 if ! cd frontend; then
-    echo "Error: Cannot find frontend directory"
+    echo "error: cannot find frontend directory"
     kill $BACKEND_PID 2>/dev/null || true
     exit 1
 fi
@@ -72,25 +72,25 @@ cd ..
 sleep 3
 
 if ! kill -0 $FRONTEND_PID 2>/dev/null; then
-    echo "Error: Frontend failed to start"
-    echo "Check logs above for details"
+    echo "error: frontend failed to start"
+    echo "check logs above for details"
     kill $BACKEND_PID 2>/dev/null || true
     exit 1
 fi
 
-echo "Frontend started (PID: $FRONTEND_PID)"
+echo "frontend started (PID: $FRONTEND_PID)"
 echo ""
-echo "Application is running"
+echo "application is running"
 echo ""
-echo "Access points:"
-echo "  Frontend:  http://localhost:4200"
-echo "  Backend:   https://localhost:7196"
-echo "  Swagger:   https://localhost:7196/swagger"
+echo "access points:"
+echo "  frontend:  http://localhost:4200"
+echo "  backend:   https://localhost:7196"
+echo "  swagger:   https://localhost:7196/swagger"
 echo ""
-echo "Login with credentials you configured in .env file"
-echo "See README.md for more information"
+echo "login with credentials you configured in .env file"
+echo "see README.md for more information"
 echo ""
-echo "Press Ctrl+C to stop all services"
+echo "press Ctrl+C to stop all services"
 echo ""
 
 wait

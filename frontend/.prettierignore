@@ -1,0 +1,14 @@
+# Build output
+dist/
+.angular/
+
+# Dependencies
+node_modules/
+
+# Coverage
+coverage/
+
+# Config files
+package-lock.json
+.env
+.env.*

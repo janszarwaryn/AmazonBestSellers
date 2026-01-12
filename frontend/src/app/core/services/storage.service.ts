@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
+import { StorageKeys } from '@core/constants';
+import { isTokenExpired } from '@core/utils/jwt.utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
-  private readonly TOKEN_KEY = 'auth_token';
-  private readonly USER_KEY = 'current_user';
+  private readonly TOKEN_KEY = StorageKeys.AUTH_TOKEN;
+  private readonly USER_KEY = StorageKeys.CURRENT_USER;
 
   setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
@@ -13,6 +15,19 @@ export class StorageService {
 
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  getValidToken(): string | null {
+    const token = this.getToken();
+    if (token && !isTokenExpired(token)) {
+      return token;
+    }
+    return null;
+  }
+
+  isTokenValid(): boolean {
+    const token = this.getToken();
+    return token !== null && !isTokenExpired(token);
   }
 
   removeToken(): void {

@@ -14,6 +14,6 @@ public class LoginRequestValidator : AbstractValidator<LoginRequestDto>
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .MinimumLength(8);
+            .MinimumLength(8).WithMessage("Password must be at least 8 characters");
     }
 }

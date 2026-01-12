@@ -1,4 +1,5 @@
-using System.Security.Claims;
+using AmazonBestSellers.API.Extensions;
+using AmazonBestSellers.Application.Common.Constants;
 using AmazonBestSellers.Domain.Entities;
 using AmazonBestSellers.Infrastructure.Data;
 
@@ -25,7 +26,7 @@ public class AuditLoggingMiddleware
 
         if (ShouldLog(method, path))
         {
-            var userId = GetUserIdFromContext(context);
+            var userId = context.User.TryGetUserId();
 
             var auditLog = new AuditLog
             {
@@ -48,14 +49,8 @@ public class AuditLoggingMiddleware
     {
         if (method == "GET") return false;
 
-        var pathsToLog = new[] { "/api/auth", "/api/favorites" };
+        var pathsToLog = new[] { ApiRoutes.Auth, ApiRoutes.Favorites };
         return pathsToLog.Any(p => path.ToString().StartsWith(p, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private static int? GetUserIdFromContext(HttpContext context)
-    {
-        var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        return int.TryParse(userIdClaim, out var userId) ? userId : null;
     }
 
     private static string GetEntityTypeFromPath(string path)

@@ -1,6 +1,8 @@
 using AmazonBestSellers.API.Extensions;
 using AmazonBestSellers.API.Middleware;
+using AmazonBestSellers.Application.Common.Constants;
 using AmazonBestSellers.Infrastructure.Data;
+using AspNetCoreRateLimit;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using DotNetEnv;
@@ -11,18 +13,42 @@ if (File.Exists(envPath))
     Env.Load(envPath);
 }
 
+var requiredEnvVars = new[]
+{
+    EnvironmentVariables.JwtSecret,
+    EnvironmentVariables.JwtIssuer,
+    EnvironmentVariables.JwtAudience,
+    EnvironmentVariables.JwtExpireMinutes,
+    EnvironmentVariables.DbHost,
+    EnvironmentVariables.DbPort,
+    EnvironmentVariables.DbName,
+    EnvironmentVariables.DbUser,
+    EnvironmentVariables.DbPassword
+};
+
+var missingVars = requiredEnvVars
+    .Where(varName => string.IsNullOrEmpty(Environment.GetEnvironmentVariable(varName)))
+    .ToList();
+
+if (missingVars.Any())
+{
+    throw new InvalidOperationException(
+        $"missing required environment variables: {string.Join(", ", missingVars)}"
+    );
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
 {
-    ["Jwt:Secret"] = Environment.GetEnvironmentVariable("JWT_SECRET"),
-    ["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER"),
-    ["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
-    ["Jwt:ExpireMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRE_MINUTES"),
-    ["RapidAPI:Key"] = Environment.GetEnvironmentVariable("RAPIDAPI_KEY"),
-    ["RapidAPI:Host"] = Environment.GetEnvironmentVariable("RAPIDAPI_HOST"),
-    ["RapidAPI:BaseUrl"] = Environment.GetEnvironmentVariable("RAPIDAPI_BASE_URL"),
-    ["Cors:AllowedOrigins:0"] = Environment.GetEnvironmentVariable("CORS_ALLOWED_ORIGINS")
+    [ConfigurationKeys.JwtSecret] = Environment.GetEnvironmentVariable(EnvironmentVariables.JwtSecret),
+    [ConfigurationKeys.JwtIssuer] = Environment.GetEnvironmentVariable(EnvironmentVariables.JwtIssuer),
+    [ConfigurationKeys.JwtAudience] = Environment.GetEnvironmentVariable(EnvironmentVariables.JwtAudience),
+    [ConfigurationKeys.JwtExpireMinutes] = Environment.GetEnvironmentVariable(EnvironmentVariables.JwtExpireMinutes),
+    [ConfigurationKeys.RapidApiKey] = Environment.GetEnvironmentVariable(EnvironmentVariables.RapidApiKey),
+    [ConfigurationKeys.RapidApiHost] = Environment.GetEnvironmentVariable(EnvironmentVariables.RapidApiHost),
+    [ConfigurationKeys.RapidApiBaseUrl] = Environment.GetEnvironmentVariable(EnvironmentVariables.RapidApiBaseUrl),
+    [ConfigurationKeys.CorsAllowedOrigins] = Environment.GetEnvironmentVariable(EnvironmentVariables.CorsAllowedOrigins)
 });
 
 builder.Host.UseSerilog((context, configuration) =>
@@ -30,11 +56,11 @@ builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration);
 });
 
-var connectionString = $"Server={Environment.GetEnvironmentVariable("DB_HOST")};" +
-                       $"Port={Environment.GetEnvironmentVariable("DB_PORT")};" +
-                       $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
-                       $"User={Environment.GetEnvironmentVariable("DB_USER")};" +
-                       $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};";
+var connectionString = $"Server={Environment.GetEnvironmentVariable(EnvironmentVariables.DbHost)};" +
+                       $"Port={Environment.GetEnvironmentVariable(EnvironmentVariables.DbPort)};" +
+                       $"Database={Environment.GetEnvironmentVariable(EnvironmentVariables.DbName)};" +
+                       $"User={Environment.GetEnvironmentVariable(EnvironmentVariables.DbUser)};" +
+                       $"Password={Environment.GetEnvironmentVariable(EnvironmentVariables.DbPassword)};";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
@@ -46,9 +72,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 
-// Response Caching for RapidAPI proxy (10 min TTL to reduce API calls)
 builder.Services.AddResponseCaching();
 builder.Services.AddMemoryCache();
+
+builder.Services.Configure<AspNetCoreRateLimit.IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.Configure<AspNetCoreRateLimit.IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateLimitPolicies"));
+builder.Services.AddInMemoryRateLimiting();
+builder.Services.AddSingleton<AspNetCoreRateLimit.IRateLimitConfiguration, AspNetCoreRateLimit.RateLimitConfiguration>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -64,6 +94,8 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSerilogRequestLogging();
 
+app.UseMiddleware<SecurityHeadersMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -72,7 +104,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Response Caching middleware (must be before UseCors)
+app.UseIpRateLimiting();
+
 app.UseResponseCaching();
 
 app.UseCors("AllowAngularApp");

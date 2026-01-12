@@ -54,8 +54,10 @@ export class AuthService {
 
   private loadUserFromStorage(): void {
     const user = this.storage.getUser<User>();
-    if (user && this.storage.getToken()) {
+    if (user && this.storage.isTokenValid()) {
       this.currentUserSignal.set(user);
+    } else if (user) {
+      this.storage.clear();
     }
   }
 }

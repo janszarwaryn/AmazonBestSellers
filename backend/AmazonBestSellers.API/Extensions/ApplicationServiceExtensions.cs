@@ -14,8 +14,6 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
-
-        // Register FluentValidation validators from Application assembly
         services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
         services.AddScoped<IUserRepository, UserRepository>();
@@ -42,8 +40,8 @@ public static class ApplicationServiceExtensions
             {
                 var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:4200" };
                 policy.WithOrigins(allowedOrigins)
-                      .AllowAnyMethod()
-                      .AllowAnyHeader()
+                      .WithMethods("GET", "POST", "DELETE")
+                      .WithHeaders("Content-Type", "Authorization")
                       .AllowCredentials();
             });
         });

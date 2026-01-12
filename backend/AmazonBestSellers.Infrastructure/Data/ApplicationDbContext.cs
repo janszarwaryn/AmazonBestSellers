@@ -54,7 +54,6 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.EntityType).IsRequired().HasMaxLength(100);
             entity.Property(e => e.EntityId).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Timestamp).IsRequired();
-            entity.Property(e => e.Details).HasColumnType("json");
             entity.Property(e => e.IpAddress).HasMaxLength(50);
         });
     }

@@ -4,7 +4,7 @@ import { StorageService } from '@core/services/storage.service';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const storage = inject(StorageService);
-  const token = storage.getToken();
+  const token = storage.getValidToken();
 
   if (token) {
     const clonedRequest = req.clone({

@@ -1,4 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -17,11 +18,13 @@ import { AuthService } from '@core/services/auth.service';
     PasswordModule
   ],
   templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   loading = signal(false);
   errorMessage = signal<string | null>(null);
@@ -42,16 +45,18 @@ export class LoginComponent {
 
     const credentials = this.loginForm.value as { username: string; password: string };
 
-    this.authService.login(credentials).subscribe({
-      next: () => {
-        this.loading.set(false);
-        this.router.navigate(['/products']);
-      },
-      error: (error) => {
-        this.loading.set(false);
-        this.errorMessage.set(error.error?.message || 'Login failed. Please check your credentials.');
-      }
-    });
+    this.authService.login(credentials)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.router.navigate(['/products']);
+        },
+        error: (error) => {
+          this.loading.set(false);
+          this.errorMessage.set(error.error?.message || 'Login failed. Please check your credentials.');
+        }
+      });
   }
 
   get username() {
