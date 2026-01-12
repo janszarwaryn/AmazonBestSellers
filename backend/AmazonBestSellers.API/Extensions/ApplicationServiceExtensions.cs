@@ -38,7 +38,8 @@ public static class ApplicationServiceExtensions
         {
             options.AddPolicy("AllowAngularApp", policy =>
             {
-                var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:4200" };
+                var allowedOriginsConfig = configuration["Cors:AllowedOrigins:0"] ?? "http://localhost:4200";
+                var allowedOrigins = allowedOriginsConfig.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 policy.WithOrigins(allowedOrigins)
                       .WithMethods("GET", "POST", "DELETE")
                       .WithHeaders("Content-Type", "Authorization")
