@@ -9,9 +9,7 @@ COPY backend/AmazonBestSellers.Application/AmazonBestSellers.Application.csproj 
 COPY backend/AmazonBestSellers.Infrastructure/AmazonBestSellers.Infrastructure.csproj backend/AmazonBestSellers.Infrastructure/
 COPY backend/AmazonBestSellers.API/AmazonBestSellers.API.csproj backend/AmazonBestSellers.API/
 
-# Use BuildKit cache mount for NuGet packages (speeds up rebuilds by ~30%)
-RUN --mount=type=cache,target=/root/.nuget/packages \
-    dotnet restore backend/AmazonBestSellers.API/AmazonBestSellers.API.csproj
+RUN dotnet restore backend/AmazonBestSellers.API/AmazonBestSellers.API.csproj
 
 COPY backend/ backend/
 
