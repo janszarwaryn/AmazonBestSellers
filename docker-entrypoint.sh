@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "Starting Amazon BestSellers..."
+echo "Starting Amazon BestSellers with embedded MariaDB..."
 
-# Validate env vars
-REQUIRED_VARS=("DB_HOST" "DB_PORT" "DB_NAME" "DB_USER" "DB_PASSWORD" "JWT_SECRET" "JWT_ISSUER" "JWT_AUDIENCE")
+# Validate required env vars
+REQUIRED_VARS=("DB_NAME" "DB_USER" "DB_PASSWORD" "JWT_SECRET" "JWT_ISSUER" "JWT_AUDIENCE")
 MISSING_VARS=()
 
 for var in "${REQUIRED_VARS[@]}"; do
@@ -19,36 +19,12 @@ if [ ${#MISSING_VARS[@]} -ne 0 ]; then
     exit 1
 fi
 
-CONNECTION_STRING="Server=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD};"
+# Set DB_HOST to localhost (internal MariaDB)
+export DB_HOST=localhost
+export DB_PORT=3306
 
-echo "Connecting to database ${DB_HOST}:${DB_PORT}..."
+echo "Initializing MariaDB..."
+./init-mariadb.sh
 
-MAX_RETRIES=20
-RETRY_COUNT=0
-
-while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    # Remove 2>/dev/null to show actual errors (helps with debugging SQL/migration errors)
-    if dotnet ef database update \
-        --project ./Infrastructure/AmazonBestSellers.Infrastructure.csproj \
-        --no-build \
-        --connection "$CONNECTION_STRING"; then
-        echo "✓ Migrations applied"
-        break
-    fi
-
-    RETRY_COUNT=$((RETRY_COUNT + 1))
-    if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-        echo "Retry $RETRY_COUNT/$MAX_RETRIES..."
-        sleep 2
-    fi
-done
-
-if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "ERROR: Database connection timeout"
-    echo "Check: DB_HOST=${DB_HOST}, DB_PORT=${DB_PORT}, DB_NAME=${DB_NAME}"
-    exit 1
-fi
-
-echo "Starting API on port 5196..."
-
-exec dotnet AmazonBestSellers.API.dll
+echo "Starting services with supervisord..."
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

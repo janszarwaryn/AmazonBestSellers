@@ -90,6 +90,44 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Apply database migrations automatically
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+
+    try
+    {
+        logger.LogInformation("Applying database migrations...");
+        var context = services.GetRequiredService<ApplicationDbContext>();
+
+        // Retry logic for database connection
+        var maxRetries = 20;
+        var retryDelay = TimeSpan.FromSeconds(2);
+
+        for (int i = 1; i <= maxRetries; i++)
+        {
+            try
+            {
+                context.Database.Migrate();
+                logger.LogInformation("✓ Migrations applied successfully");
+                break;
+            }
+            catch (Exception ex) when (i < maxRetries)
+            {
+                logger.LogWarning($"Migration attempt {i}/{maxRetries} failed: {ex.Message}");
+                logger.LogInformation($"Retrying in {retryDelay.TotalSeconds} seconds...");
+                await Task.Delay(retryDelay);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while migrating the database");
+        throw;
+    }
+}
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSerilogRequestLogging();
