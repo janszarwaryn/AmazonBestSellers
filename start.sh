@@ -37,6 +37,16 @@ if ! docker ps | grep -q amazon-bestsellers-db; then
     sleep 5
 fi
 
+# Check if port 7196 is free
+if lsof -i:7196 >/dev/null 2>&1; then
+    echo "error: port 7196 is already in use"
+    echo "run './stop.sh' first to stop all services"
+    echo ""
+    echo "or manually kill the process:"
+    echo "  lsof -ti:7196 | xargs kill -9"
+    exit 1
+fi
+
 echo "starting backend..."
 if ! cd backend/AmazonBestSellers.API; then
     echo "error: cannot find backend directory"

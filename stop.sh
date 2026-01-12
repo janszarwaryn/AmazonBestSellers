@@ -34,6 +34,16 @@ stop_process "Start script" "start.sh"
 # stop any background bash processes from start.sh
 stop_process "Background processes" "bash.*start.sh"
 
+echo -e "checking port 7196..."
+# Kill any remaining process on port 7196
+if lsof -ti:7196 >/dev/null 2>&1; then
+    lsof -ti:7196 | xargs kill -9 2>/dev/null || true
+    echo -e "${GREEN}✓ Port 7196 freed${NC}"
+    sleep 1
+else
+    echo -e "${GREEN}✓ Port 7196 already free${NC}"
+fi
+
 echo
 echo -e "${GREEN}all services stopped${NC}"
 echo

@@ -9,4 +9,5 @@ public class AuditLog
     public required string EntityId { get; set; }
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     public string? IpAddress { get; set; }
+    public string? Details { get; set; }
 }
