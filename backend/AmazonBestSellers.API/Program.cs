@@ -113,7 +113,7 @@ app.UseHttpsRedirection();
 
 // Static files + cache
 app.UseDefaultFiles();
-app.UseStaticFiles(new Microsoft.AspNetCore.StaticFiles.StaticFileOptions
+app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
 {
     OnPrepareResponse = ctx =>
     {

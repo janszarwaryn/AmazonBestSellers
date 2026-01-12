@@ -2,6 +2,8 @@
 
 Full-stack app for browsing Amazon bestsellers with auth and favorites.
 
+<img src="img.png" alt="Amazon BestSellers Explorer" width="700">
+
 ## Requirements
 
 - Docker Desktop
