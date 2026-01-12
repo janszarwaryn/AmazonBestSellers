@@ -23,14 +23,15 @@ CONNECTION_STRING="Server=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};User=${
 
 echo "Connecting to database ${DB_HOST}:${DB_PORT}..."
 
-MAX_RETRIES=30
+MAX_RETRIES=20
 RETRY_COUNT=0
 
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    # Remove 2>/dev/null to show actual errors (helps with debugging SQL/migration errors)
     if dotnet ef database update \
         --project ./Infrastructure/AmazonBestSellers.Infrastructure.csproj \
         --no-build \
-        --connection "$CONNECTION_STRING" 2>/dev/null; then
+        --connection "$CONNECTION_STRING"; then
         echo "✓ Migrations applied"
         break
     fi
