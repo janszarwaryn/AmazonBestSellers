@@ -136,3 +136,5 @@ secrets.json
 
 # Docker
 docker-compose.override.yml
+
+logi.txt

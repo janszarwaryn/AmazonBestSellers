@@ -33,7 +33,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-RUN dotnet tool install --global dotnet-ef --version 9.0.0
+# Copy dotnet-ef tools from backend-build instead of installing again (avoids timeout issues)
+COPY --from=backend-build /root/.dotnet/tools /root/.dotnet/tools
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 WORKDIR /app
